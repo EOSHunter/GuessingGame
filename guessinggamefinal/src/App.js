@@ -18,6 +18,7 @@ class App extends Component {
       input: "",
       guessesMade: 0,
       highscore: 0,
+      newHighscore: 1000,
       gamemode: "",
       correctNum: 0,
       message: "",
@@ -37,6 +38,7 @@ class App extends Component {
     let userInput = this.state.input;
     let message;
     const totalGuesses = this.state.guessesMade+1;
+    let newHighscore = this.state.newHighscore;
 
     if (userInput < this.state.correctNum) {
       message = "Guess is too low!"
@@ -44,17 +46,15 @@ class App extends Component {
       message = "Guess is too high!"
     } else {
       message = "Correct, you got it!"
+      this.setState({
+      highscore: this.state.newHighscore-100,
+      })
     }
-
 
     this.setState({
       message: message,
       guessesMade: totalGuesses,
     })
-  }
-
-  handleHighscore(){
-
   }
 
   Standard(){
@@ -116,7 +116,7 @@ class App extends Component {
             
             <p className="totalGuesses">Total guesses:</p>
             <p className="number-guesses">{this.state.guessesMade}</p>
-            <p className="highschore">Highscore:</p>
+            <p className="highschore">Highscore</p>
             <p className="highscore-number">{this.state.highscore}</p>
             
             <div>
