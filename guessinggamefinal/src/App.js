@@ -12,17 +12,17 @@ class App extends Component {
     this.Standard = this.Standard.bind(this);
     this.Expert = this.Expert.bind(this);
     this.Reset = this.Reset.bind(this);
-    this.Guess = this.Guess.bind(this);
+    this.handleHighscore = this.handleHighscore.bind(this);
 
     this.state = {
       input: "",
       guessesMade: 0,
-      standardHighscore: 0,
+      highscore: 0,
       gamemode: "",
-      ExpertHighscore: 0,
       correctNum: 0,
       message: "",
-      contentID: "hidden"
+      contentID: "hidden",
+      instructions: "",
     }
   }
 
@@ -35,9 +35,8 @@ class App extends Component {
 
   handleUserInput(){
     let userInput = this.state.input;
-    let guessesMade = this.state.guessesMade;
-    guessesMade.push(userInput);
     let message;
+    const totalGuesses = this.state.guessesMade+1;
 
     if (userInput < this.state.correctNum) {
       message = "Guess is too low!"
@@ -47,48 +46,52 @@ class App extends Component {
       message = "Correct, you got it!"
     }
 
+
     this.setState({
-      guessesMade: guessesMade,
       message: message,
+      guessesMade: totalGuesses,
     })
+  }
+
+  handleHighscore(){
+
   }
 
   Standard(){
     let randomNum = Math.floor((Math.random()* 10) + 1);
+    let instructions = this.state.instructions;
     this.setState({
       correctNum: randomNum,
       gamemode: "Standard",
-      contentID: ""
+      instructions: "Guess a number between 1 and 10",
+      contentID: "",
     })
   }
 
   Expert(){
     let randomNum = Math.floor((Math.random()* 100) + 1);
+    let instructions = this.state.instructions;
     this.setState({
       correctNum: randomNum,
       gamemode: "Expert",
-      contentID: ""
+      contentID: "",
+      instructions: "Guess a number between 1 and 100",
     })
   }
 
-  Guess(){
-    this.setState({
-      guessesMade: +1
-    })
-  }
 
   Reset(){
     this.setState({
       input: "",
       guessesMade: 0,
+      highscore: 0,
       gamemode: "",
       correctNum: 0,
       message: "",
-      contentID: "hidden"
+      contentID: "hidden",
+      instructions: "",
     })
   }
-
-
 
   render() {
     return (
@@ -104,31 +107,26 @@ class App extends Component {
         <div id={this.state.contentID} className="game">
           <div className="text">
             <h2 className="gamemode-title">{this.state.gamemode}</h2>
-            <p>Guess a number between 1 and 10</p>
+            <p>{this.state.instructions}</p>
             <p className="message-wrong">{this.state.message}</p>
             
             <label for="guess">Your Guess: <input type="guess" id="guess" name="guess" placeholder="Guess" onChange={this.getUserInput} onClick={this.Guess} required=""/></label>
             
             <div id="response"></div>
             
-            <p className="totalGuesses">Total guesses</p>
-            <p className="number-guesses"></p>
-            <p className="highschore">Highscore</p>
-            <p className="highscore-number"></p>
+            <p className="totalGuesses">Total guesses:</p>
+            <p className="number-guesses">{this.state.guessesMade}</p>
+            <p className="highschore">Highscore:</p>
+            <p className="highscore-number">{this.state.highscore}</p>
             
             <div>
-              <input id="btn-submit" onClick={this.handleUserInput} type="submit" name="submit" value="Submit"/>
+              <input id="btn-submit" onClick={this.state.guessesMade} onClick={this.handleUserInput} type="submit" name="submit" value="Submit"/>
               <input id="btn-reset" onClick={this.Reset} type="reset" name="reset" value="Reset"/>
             </div>
-            
+            <div className="background-image">
+            </div>
           </div>
-
-          <div>
-            <div className="background-image"></div>
-          </div>
-
         </div>
-
       </div>
     );
   }
